@@ -1,35 +1,68 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from "react";
+
+import LoginScreen from "./screens/LoginScreen";
+import DashboardScreen from "./screens/DashboardScreen";
+import OrderScreen from "./screens/OrderScreen";
+import KitchenScreen from "./screens/KitchenScreen";
+import TablesScreen from "./screens/TablesScreen";
+import ReportsScreen from "./screens/ReportsScreen";
+import AiScreen from "./screens/AiScreen";
+import PlansScreen from "./screens/PlansScreen";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [pantalla, setPantalla] = useState("login");
+  const [usuarioActual, setUsuarioActual] = useState(null);
+
+  const handleLoginSuccess = (usuarioDemo) => {
+    setUsuarioActual(usuarioDemo);
+    setPantalla("dashboard");
+  };
+
+  const handleNavigate = (screen) => {
+    setPantalla(screen);
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {/* LOGIN */}
+      {pantalla === "login" && (
+        <LoginScreen onLoginSuccess={handleLoginSuccess} />
+      )}
+
+      {/* DASHBOARD */}
+      {pantalla === "dashboard" && (
+        <DashboardScreen usuario={usuarioActual} onNavigate={handleNavigate} />
+      )}
+
+      {/* TOMAR PEDIDO */}
+      {pantalla === "orders" && (
+        <OrderScreen onNavigate={handleNavigate} />
+      )}
+
+      {/* COCINA */}
+      {pantalla === "kitchen" && (
+        <KitchenScreen onNavigate={handleNavigate} />
+      )}
+
+      {/* MESAS */}
+      {pantalla === "tables" && (
+        <TablesScreen onNavigate={handleNavigate} />
+      )}
+
+      {/* REPORTES */}
+      {pantalla === "reports" && (
+        <ReportsScreen onNavigate={handleNavigate} />
+      )}
+
+      {/* AI */}
+      {pantalla === "ai" && <AiScreen onNavigate={handleNavigate} />}
+
+      {/* PLANES */}
+      {pantalla === "plans" && (
+        <PlansScreen onBack={() => setPantalla("dashboard")} />
+      )}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
